@@ -23,7 +23,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="base.py" />
-    <Compile Include="chinaacc.py" />
+    <Compile Include="constant.py" />
+    <Compile Include="content_gen.py" />
     <Compile Include="content_provider.py" />
     <Compile Include="mail_addr_provider.py" />
     <Compile Include="neteasy_webmail.py" />
