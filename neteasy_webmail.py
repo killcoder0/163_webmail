@@ -51,5 +51,5 @@ class NeteasyMailbox(object):
 
 if __name__ == "__main__":
     box = NeteasyMailbox()
-    box.login("meiboyking7@163.com","error12345678")
+    box.login("game_works_003@163.com","abc123")
     raw_input("press")
