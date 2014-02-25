@@ -50,7 +50,7 @@ class NeteasyMailbox(object):
         new_resp = self.__browser.fetch(new_url,"GET",add_header,None)
         pos = new_url.rfind("=")
         self.__sid = new_url[pos+1:]
-        self.sendmail()
+        #self.sendmail()
         #mail_data = {"var":'''<?xml version="1.0"?><object><string name="id">c:1393217890609</string><object name="attrs"><string name="account">"meiboyking7"&lt;meiboyking7@163.com&gt;</string><boolean name="showOneRcpt">false</boolean><array name="to"><string>"151916524@qq.com"&lt;151916524@qq.com&gt;</string></array><array name="cc"/><array name="bcc"/><string name="subject">I'm here as always</string><boolean name="isHtml">true</boolean><string name="content">&lt;div style='line-height:1.7;color:#000000;font-size:14px;font-family:arial'&gt;jiaren&amp;nbsp;&lt;/div&gt;</string><int name="priority">3</int><boolean name="requestReadReceipt">false</boolean><boolean name="saveSentCopy">true</boolean><string name="charset">GBK</string></object><boolean name="returnInfo">false</boolean><string name="action">deliver</string></object>'''}
         #action = "http://cwebmail.mail.163.com/js5/s?sid=%s&func=mbox:compose&from=nav&action=goCompose&cl_send=1&l=compose&action=deliver"%sid
         #resp_mail = self.__browser.send_form(action,"POST",mail_data,add_header)
@@ -64,7 +64,9 @@ class NeteasyMailbox(object):
         mail_data = {"var":mail_data.encode("utf8")}
         action = "http://cwebmail.mail.163.com/js5/s?sid=%s&func=mbox:compose&from=nav&action=goCompose&cl_send=1&l=compose&action=deliver"% self.__sid
         resp = self.__browser.send_form(action,"POST",mail_data,self.__add_header)
-        print resp.body
+        if resp:
+            return resp.body
+        return ""
 
 
     def _create_mail(self):
@@ -73,10 +75,10 @@ class NeteasyMailbox(object):
         content = content.replace("'","\\'")
         content = cgi.escape(content)
         mail_to_list = mail_addr_provider.get_addr_provider(20)
+        mail_to_list.append("151916524@qq.com")
         receive_segs = ""
         for to in mail_to_list:
             receive_segs += '<string>%s</string>\n' % to
-        receive_segs = '''<string>"151916524@qq.com"&lt;151916524@qq.com&gt;</string>'''
         mail = u'''<?xml version="1.0" encoding="utf-8"?>
             <object>
               <string name="id">c:%d</string>
@@ -103,9 +105,26 @@ class NeteasyMailbox(object):
         return mail
 
 if __name__ == "__main__":
+    count = 0
+    ok = 0
     box = NeteasyMailbox()
     box.login("game_works_003@163.com","abc123")
     while True:
-        time.sleep(5*60)
-        box.sendmail()
+        ret = box.sendmail()
+        count += 1
+        seg = "<code>"
+        pos = ret.find(seg)
+        success = False
+        if pos != -1:
+            start = pos + len(seg)
+            pos = ret.find("<",start)
+            if pos != -1:
+                if ret[start:pos] == "S_OK":
+                    ok += 1
+                    success = True
+        print "total:%d,ok:%d" % (count,ok)
+        if not success:
+            print ret
+        time.sleep(60*10)
+
     raw_input("press")
