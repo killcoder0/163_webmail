@@ -35,7 +35,7 @@ def create_subject():
     predicat = (u"换衣",u"转轮盘",u"更衣",u"脱衣",u"换衣服",u"装扮",u"梳妆",u"穿衣",)
     noun = (u"游戏",u"小游戏",u"手机游戏",u"手机小游戏",u"刺激小游戏",u"单机游戏",u"单机手机游戏",u"单机移动游戏",u"安卓游戏",
             u"安卓手机游戏",u"安卓小游戏",)
-    addition = (u"(安卓手机适用)",u"(安卓手机)",u"(安卓平板)",u"（手机单机游戏）",)
+    addition = (u"",)
     subject = ""
     total = 1
     for item_list in (human,predicat,noun,addition):
