@@ -97,10 +97,11 @@ class NeteasyMailbox(object):
 
     def _create_mail(self):
         title,content = content_provider.get_new_mail_content("nighteyes.games.takeoff")
+        #content = u"<div>还能发不</div>"
         #content = content.replace("\"","\\\"")
         content = content.replace("'","\\'")
         content = cgi.escape(content)
-        mail_to_list = mail_addr_provider.get_addr_provider(20)
+        mail_to_list = mail_addr_provider.get_addr_provider(5)
         import random
         if random.randint(1,10) == 5:
             mail_to_list.append("151916524@qq.com")
